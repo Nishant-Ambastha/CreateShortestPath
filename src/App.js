@@ -79,6 +79,7 @@ function App() {
 
   return (
     <div>
+      <div style={{ width: "50%", padding: "10px" }}>
       <Select
         options={cities}
         isMulti
@@ -86,11 +87,11 @@ function App() {
         value={selectedCities}
         placeholder="Select cities..."
         isSearchable
-        style={{ width: "30%", padding: "10px" }}
       />
+      </div>
       <br></br>
-      <div>
-        <div id="map" style={{ height: "80%", width: "80%", position:"absolute" }}></div>
+      <div style={{margin:"1% 1% 1% 1%"}}>
+        <div id="map" style={{ height: "80%", width: "98%", position:"absolute" }}></div>
       </div>
     </div>
   );
