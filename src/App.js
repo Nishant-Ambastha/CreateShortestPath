@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import Select from 'react-select';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import Select from "react-select";
 
 function App() {
   const [cities, setCities] = useState([]);
@@ -10,16 +10,16 @@ function App() {
   useEffect(() => {
     async function fetchCities() {
       try {
-        const response = await axios.get('http://localhost:5000/cities'); // Replace with your backend URL
-        const formattedCities = response.data.map(city => ({
+        const response = await axios.get("http://localhost:5000/cities"); // Replace with your backend URL
+        const formattedCities = response.data.map((city) => ({
           value: city.name,
-          label: city.name + ' (' + city.state + ')',
+          label: city.name + " (" + city.state + ")",
           latitude: parseFloat(city.lat),
           longitude: parseFloat(city.lon),
         }));
         setCities(formattedCities);
       } catch (error) {
-        console.error('Failed to fetch cities', error);
+        console.error("Failed to fetch cities", error);
       }
     }
 
@@ -27,10 +27,14 @@ function App() {
   }, []);
 
   useEffect(() => {
+    console.log(selectedCities);
     if (window.google && map) {
       const bounds = new window.google.maps.LatLngBounds();
-      selectedCities.forEach(city => {
-        const position = new window.google.maps.LatLng(city.latitude, city.longitude);
+      selectedCities.forEach((city) => {
+        const position = new window.google.maps.LatLng(
+          city.latitude,
+          city.longitude
+        );
         bounds.extend(position);
         new window.google.maps.Marker({
           position: position,
@@ -45,16 +49,20 @@ function App() {
   }, [selectedCities, map]);
 
   useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY';
+    const script = document.createElement("script");
+    script.src =
+      "https://maps.googleapis.com/maps/api/js?key=AIzaSyBZdbI8cT6dvLfBN2ORpPaTOl8ElNt3YvE";
     script.async = true;
     script.defer = true;
 
     script.onload = () => {
-      const newMap = new window.google.maps.Map(document.getElementById('map'), {
-        center: { lat: 0, lng: 0 },
-        zoom: 2,
-      });
+      const newMap = new window.google.maps.Map(
+        document.getElementById("map"),
+        {
+          center: { lat: 18.975, lng: 72.825833 },
+          zoom: 2,
+        }
+      );
       setMap(newMap);
     };
 
@@ -65,12 +73,12 @@ function App() {
     };
   }, []);
 
-  const handleCitySelect = selectedOptions => {
+  const handleCitySelect = (selectedOptions) => {
     setSelectedCities(selectedOptions);
   };
 
   return (
-    <div style={{ display: 'flex', height: '100vh' }}>
+    <div>
       <Select
         options={cities}
         isMulti
@@ -78,10 +86,11 @@ function App() {
         value={selectedCities}
         placeholder="Select cities..."
         isSearchable
-        style={{ width: '30%', padding: '10px' }}
+        style={{ width: "30%", padding: "10px" }}
       />
-      <div style={{ flex: 1 }}>
-        <div id="map" style={{ height: '100%', width: '100%' }}></div>
+      <br></br>
+      <div>
+        <div id="map" style={{ height: "80%", width: "80%", position:"absolute" }}></div>
       </div>
     </div>
   );
